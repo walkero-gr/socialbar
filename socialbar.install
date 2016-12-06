@@ -1,0 +1,46 @@
+<?php 
+/**
+ * @file
+ * SocialBar module install file
+ *
+ * Created by George Sokianos (walkero@gmail.com)
+ *
+ */
+
+ 
+/**
+ * Implements hook_install().
+ */
+function socialbar_install() {
+	variable_set('socialbar_fb_pageid', '');
+	variable_set('socialbar_fb_appid', '');
+	variable_set('socialbar_tw_profile', '');
+	variable_set('socialbar_tw_widgetid', '');
+	variable_set('socialbar_yt_profile', '');
+	variable_set('socialbar_yt_numofvideos', 10);
+	variable_set('socialbar_gp_profile', '');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function socialbar_uninstall() {
+	variable_del('socialbar_fb_pageid');
+	variable_del('socialbar_fb_appid', '');
+	variable_del('socialbar_tw_profile');
+	variable_del('socialbar_tw_widgetid');
+	variable_del('socialbar_yt_profile');
+	variable_del('socialbar_yt_numofvideos');
+	variable_del('socialbar_gp_profile');
+}
+
+
+/**
+ * Implementation of hook_schema().
+ */
+function socialbar_schema() {
+  $schema = array();
+  
+
+  return $schema;
+}

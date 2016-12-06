@@ -1,0 +1,219 @@
+<?php 
+/**
+ * @version 1.3
+ * @file
+ * SocialBar module file
+ *
+ * Created by George Sokianos (walkero@gmail.com)
+ *
+ * @todo
+ * - Check if Google plus profile name starts with +
+ * - fix css errors
+ * - insert more info in the administration page under the fields
+ *
+ */
+ 
+ 
+/**
+ * Implements hook_permission().
+ */
+function socialbar_permission() {
+  return array(
+    'administer socialbar' => array(
+      'title' => t('Administer SocialBar'),
+      'description' => t('Perform administrative actions with SocialBar module.'),
+    )
+  );
+}
+
+
+
+/**
+ * Implementation of hook_menu().
+ */
+function socialbar_menu() {
+  $items['admin/config/services/socialbar'] = array(
+    'title' => 'SocialBar',
+    'description' => 'Manage SocialBar',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('socialbar_settings'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer socialbar'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'socialbar.admin.inc',
+	'menu_name' => 'management',
+  );
+  return $items;
+}
+
+
+
+/**
+ * Implements hook_block_info().
+ */
+function socialbar_block_info() {
+  $blocks['socialbar_block'] = array(
+    'info' => t('SocialBar: BlockBar'),
+    'cache' => DRUPAL_NO_CACHE  //DRUPAL_CACHE_PER_ROLE, // default
+  );
+
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ *
+ * This hook generates the contents of the blocks themselves.
+ */
+function socialbar_block_view($delta = '') {
+  //The $delta parameter tells us which block is being requested.
+  $block = array();
+  switch ($delta) {
+    case 'socialbar_block':		
+      	//drupal_add_css(drupal_get_path('module', 'socialbar') .'/socialbar.css');
+      	//drupal_add_js(drupal_get_path('module', 'socialbar') .'/socialbar.js');
+
+		$blockcontent = '';
+		//$blockcontent .= '<div id="socialbar-modal"></div>';
+		
+		$blockcontent .= '<div class="socialbar_buttons">';
+		if(variable_get('socialbar_fb_pageid', '') != '') {
+			$blockcontent .= '<div id="socialbar-fb" class="socialbar_button" data-sc="fb"></div>';
+		}
+		if((variable_get('socialbar_tw_profile', '') != '') && (variable_get('socialbar_tw_widgetid', '') != '')) {
+			$blockcontent .= '<div id="socialbar-tw" class="socialbar_button" data-sc="tw"></div>';
+		}
+		if(variable_get('socialbar_gp_profile', '') != '') {
+			$blockcontent .= '<div id="socialbar-gp" class="socialbar_button" data-sc="gp"></div>';
+		}		
+		if( (variable_get('socialbar_yt_profile', '') != '') && (variable_get('yt_api_key', '') != '') ) {
+			$blockcontent .= '<div id="socialbar-yt" class="socialbar_button" data-sc="yt"></div>';
+		}
+		$blockcontent .= '</div>';
+		
+		$blockcontent .= '<div class="socialbar_content">';		
+		$blockcontent .= '<div class="close_button">' . t('Close') . '</div>';
+
+		// FB Widget
+		// https://developers.facebook.com/docs/plugins/page-plugin
+		if(variable_get('socialbar_fb_pageid', '') != '') {
+			$blockcontent .= '<div class="socialbar_item item_fb">';
+			/*
+			$blockcontent .= '<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2F' . variable_get('socialbar_fb_pageid', '') . '&amp;width=300&amp;height=368&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;show_border=true&amp;header=false&amp;appId=418679394818812" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px; height:368px;" allowTransparency="true"></iframe>';
+			*/
+			$blockcontent .= '<div id="fb-root"></div>
+			<script>(function(d, s, id) {
+			  var js, fjs = d.getElementsByTagName(s)[0];
+			  if (d.getElementById(id)) return;
+			  js = d.createElement(s); js.id = id;
+			  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=' . variable_get('socialbar_fb_pageid', '113952418958500') . '";
+			  fjs.parentNode.insertBefore(js, fjs);
+			}(document, \'script\', \'facebook-jssdk\'));</script>';			
+			$blockcontent .= '<div class="fb-page" data-href="https://www.facebook.com/' . variable_get('socialbar_fb_pageid', '') . '" data-tabs="timeline, events, messages" data-width="300" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="true"></div>';
+			
+			$blockcontent .= '</div>';
+			
+		}
+		
+		// Twitter Widget
+		if((variable_get('socialbar_tw_profile', '') != '') && (variable_get('socialbar_tw_widgetid', '') != '')) {
+			$blockcontent .= '<div class="socialbar_item item_tw">';
+			$blockcontent .= '<a class="twitter-timeline" href="https://twitter.com/espressonews_gr" data-widget-id="' . variable_get('socialbar_tw_widgetid', '') . '" width="300" height="400">' . t('Tweets by') . ' @' . variable_get('socialbar_tw_profile', '') . '</a>';
+			$blockcontent .= '<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?"http":"https";if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+			$blockcontent .= '</div>';
+		}
+		
+		// Google Plus Widget
+		// https://developers.google.com/+/web/badge/
+		if(variable_get('socialbar_gp_profile', '') != '') {
+			$blockcontent .= '<div class="socialbar_item item_gp">';
+			/*
+			$blockcontent .= '
+				<script type="text/javascript">
+					window.___gcfg = {
+					  lang: "el_GR",
+					  parsetags: "onload"
+					};
+				</script>
+				<script src="https://apis.google.com/js/platform.js" async defer></script>
+			';
+			$blockcontent .= '<div class="g-page" data-href="https://plus.google.com/' . variable_get('socialbar_gp_profile', '') . '" data-showcoverphoto="true" data-rel="publisher"></div>';
+			*/
+			$blockcontent .= '<script src="https://apis.google.com/js/platform.js" async defer></script>';
+			$blockcontent .= '<g:page href="https://plus.google.com/' . variable_get('socialbar_gp_profile', '') . '"></g:page>';
+			$blockcontent .= '</div>';
+		}
+		
+		// Youtube Widget
+		if( (variable_get('socialbar_yt_profile', '') != '') && (variable_get('yt_api_key', '') != '') ) {
+		  
+			$yt_playlists = 'https://www.googleapis.com/youtube/v3/channels';
+			$yt_playlists_flds = array(
+			  'part' => 'contentDetails',
+			  'forUsername' => variable_get('socialbar_yt_profile', ''),
+			  'key' => variable_get('yt_api_key', '') //'AIzaSyDYdoAEnR7vdEZ3WnITnME8xG4MstxIQU0'
+			);
+			$yt_playlists_result = socialbar_curlurl($yt_playlists, $yt_playlists_flds);
+			$yt_playlists_arr = json_decode($yt_playlists_result);
+			
+			$yt_uploaded = 'https://www.googleapis.com/youtube/v3/playlistItems';
+			$yt_uploaded_flds = array(
+			  'part' => 'snippet,contentDetails,status',
+			  'maxResults' => variable_get('socialbar_yt_numofvideos', 10),
+			  'playlistId' => $yt_playlists_arr->items[0]->contentDetails->relatedPlaylists->uploads,
+			  'key' => variable_get('yt_api_key', '') //'AIzaSyDYdoAEnR7vdEZ3WnITnME8xG4MstxIQU0'
+			);
+			$yt_uploaded_result = socialbar_curlurl($yt_uploaded, $yt_uploaded_flds);
+			$yt_uploaded_arr = json_decode($yt_uploaded_result);
+			
+			// https://developers.google.com/youtube/youtube_subscribe_button
+			$blockcontent .= '<div class="socialbar_item item_yt">';
+			$blockcontent .= '<script src="https://apis.google.com/js/platform.js"></script>';
+			$blockcontent .= '<div id="yt-button-wrapper">';
+			$blockcontent .= '<div class="g-ytsubscribe" data-channel="' . variable_get('socialbar_yt_profile', '') . '" data-layout="full" data-count="default"></div>';
+			$blockcontent .= '</div>';
+			$blockcontent .= '<div id="yt-list-wrapper">';	
+			$blockcontent .= '<ul id="YTFeedList" class="YT_FeedList">';
+			
+			foreach($yt_uploaded_arr->items AS $yt_video_key => $yt_video_data) {
+			  $blockcontent .= '<li>';
+			  $blockcontent .= '<a href="https://www.youtube.com/watch?v=' . $yt_video_data->contentDetails->videoId . '" class="fblbthumb-link"><img src="' . $yt_video_data->snippet->thumbnails->default->url . '" alt="" width="61" height="45" class="fblbthumb" /></a>';
+			  $blockcontent .= '<div class="fblbbd">';
+			  $blockcontent .= '<a href="https://www.youtube.com/watch?v=' . $yt_video_data->contentDetails->videoId . '" class="fblbtitle" target="_blank">' . $yt_video_data->snippet->title . '</a><br/>';
+			  $blockcontent .= '<span class="fblbinfo">Αναρτ.: ' . date("d/m/Y",strtotime($yt_video_data->snippet->publishedAt));
+			  $blockcontent .= '</div>';			  
+			  $blockcontent .= '</li>';
+			}
+			$blockcontent .= '</ul>';
+			$blockcontent .= '</div>';
+			$blockcontent .= '<div style="clear: both;">&nbsp;</div>';
+							
+			$blockcontent .= '</div>';
+		}
+		
+		$blockcontent .= '</div>'; // end of socialbar_content div
+		
+		$block['subject'] = t('SocialBar');
+		$block['content'] = $blockcontent;
+      break;
+  }
+  return $block;
+}
+
+
+function socialbar_curlurl($url, $fields, $method = 'GET') {
+	$ch = curl_init();	
+	if($method == 'POST') {
+		curl_setopt($ch,CURLOPT_POST,count($fields));
+		curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($fields));
+	} else {
+		$url .= '?' .  http_build_query($fields);
+	}
+	curl_setopt($ch,CURLOPT_URL,$url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+	$reqres = curl_exec($ch);
+	curl_close($ch);
+	return $reqres;
+}

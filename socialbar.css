@@ -1,0 +1,40 @@
+#block-socialbar-socialbar-block {width: 50px; height: 430px; overflow: hidden; position: fixed; right: 0px; z-index: 99999;}
+#block-socialbar-socialbar-block .block-title {display: none;}
+#block-socialbar-socialbar-block .content {background-color: transparent; height: 430px;}
+
+#block-socialbar-socialbar-block .socialbar_buttons {width: 49px; display: inline-block; padding-top: 19px; vertical-align: top;}
+#block-socialbar-socialbar-block .socialbar_button {width: 49px; height: 55px; cursor: pointer; background-position: right center;}
+#block-socialbar-socialbar-block #socialbar-fb {background: url('images/socialbar_fb.png') no-repeat;}
+#block-socialbar-socialbar-block #socialbar-tw {background: url('images/socialbar_tw.png') no-repeat;}
+#block-socialbar-socialbar-block #socialbar-yt {background: url('images/socialbar_yt.png') no-repeat;}
+#block-socialbar-socialbar-block #socialbar-gp {background: url('images/socialbar_gp.png') no-repeat;}
+
+#block-socialbar-socialbar-block .socialbar_content {visibility: hidden; padding: 0px 0px 0px 0px;}
+#block-socialbar-socialbar-block .socialbar_content .socialbar_item {width: 1px; height: 1px; overflow: hidden; visibility: hidden; }
+#block-socialbar-socialbar-block .socialbar_content.opened {display: inline-block; visibility: visible; vertical-align: top;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item {width: 300px; height: 395px; visibility: visible;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_fb {background-color: white; border: 4px solid #3C5B9B;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_tw {background-color: white; border: 4px solid #2DAAE1;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_gp {background-color: white; border: 4px solid #333230;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_yt {background-color: white; border: 4px solid #FE3432;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_yt #yt-button-wrapper {border-bottom: 1px solid #dadada; padding: 10px; height: auto; min-height: 50px;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_yt #yt-list-wrapper {height: 325px; overflow: auto; color: black;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_yt #yt-list-wrapper ul {padding: 0px; margin: 0px; list-style-image: none; list-style: none;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_yt #yt-list-wrapper ul li {padding: 5px; margin: 0px 0px 0px 0px; list-style-image: none; list-style: none; 
+  min-height: 65px; border-bottom: 1px solid #dadada; font-size: 12px; line-height: 14px;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_yt #yt-list-wrapper ul li .fblbthumb-link {display: inline-block; width: 29%; padding: 0; vertical-align: top;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_yt #yt-list-wrapper ul li img {width: 100%; height: auto; margin: 0px 6px 3px 0px;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_yt #yt-list-wrapper ul li .fblbbd {width: 66%; display: inline-block; padding: 0 2%; margin: 0; vertical-align: top;}
+#block-socialbar-socialbar-block .socialbar_content.opened .socialbar_item.item_yt #yt-list-wrapper a {color: #FE3432;}
+
+#block-socialbar-socialbar-block .close_button {color: #AAAAAA; padding: 3px 0px; font-size: 13px; line-height: 13px; display: none; cursor: pointer; text-align: right;}
+
+#socialbar-modal {
+position:fixed;
+top: 0; left: 0;
+z-index:90000;
+width: 100%; height: 100%;
+background-color:#000;
+display:none;
+opacity: 0.5;
+}

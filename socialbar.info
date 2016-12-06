@@ -1,0 +1,15 @@
+name = SocialBar
+description = Social Bar block for websites
+core = 7.x
+package = "InterCube media"
+version = "7.x-1.3-dev"
+
+; Base module files
+configure = admin/config/services/socialbar
+
+files[] = socialbar.install
+files[] = socialbar.module
+
+scripts[] = socialbar.js
+
+stylesheets[all][] = socialbar.css
