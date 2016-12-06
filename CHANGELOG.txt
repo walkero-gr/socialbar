@@ -1,0 +1,28 @@
+SocialBar module file
+
+Created by George Sokianos (walkero@gmail.com)
+
+
+v1.3 (2015/12/27)
+- Removed drupal_add_js and drupal_add_css which were added
+- Updated the js file using drupal behaviors decleration
+- Cleaned the js code
+- Added url for API keys in the admin page for twitter and youtube
+- A lot of fixes in the css
+- Changed the FB widget code with the newest one, with the tabs feature
+- Added in the admin page the FB AppID field
+
+v1.2 (2015/10/13)
+- Updated the YouTube API to v3, showing a list of the latest videos
+- Added a parameter at the admin page where the user must insert the Youtube API key
+- Updated the Javascript code of the Google+ widget
+
+v1.1 (2014/01/20)
+- Added list of the latest videos from YouTube channel
+- Set the number of videos in the admin page
+- Fixed the css to look better
+- Now if the user clicks the same social tab icon twice the bar closes
+- Set default size for the Twitter widget
+- Fixed the caching method of the block
+
+v1.0  (2013/07/30)
