@@ -119,7 +119,7 @@ function socialbar_block_view($delta = '') {
 		// Twitter Widget
 		if((variable_get('socialbar_tw_profile', '') != '') && (variable_get('socialbar_tw_widgetid', '') != '')) {
 			$blockcontent .= '<div class="socialbar_item item_tw">';
-			$blockcontent .= '<a class="twitter-timeline" href="https://twitter.com/espressonews_gr" data-widget-id="' . variable_get('socialbar_tw_widgetid', '') . '" width="300" height="400">' . t('Tweets by') . ' @' . variable_get('socialbar_tw_profile', '') . '</a>';
+			$blockcontent .= '<a class="twitter-timeline" href="https://twitter.com/' . variable_get('socialbar_tw_profile', '') . '" data-widget-id="' . variable_get('socialbar_tw_widgetid', '') . '" width="300" height="400">' . t('Tweets by') . ' @' . variable_get('socialbar_tw_profile', '') . '</a>';
 			$blockcontent .= '<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?"http":"https";if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
 			$blockcontent .= '</div>';
 		}
